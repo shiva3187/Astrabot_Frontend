@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { IKContext } from "imagekitio-react";
 import "./dashBoardPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -59,9 +60,11 @@ const DashboardPage = () => {
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <input type="text" name="text" placeholder="Ask me anything..." />
+          <IKContext/>
           <button>
             <img src="/arrow.png" />
           </button>
+          
         </form>
       </div>
     </div>
