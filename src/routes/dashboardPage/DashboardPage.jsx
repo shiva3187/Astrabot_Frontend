@@ -1,28 +1,31 @@
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IKContext } from "imagekitio-react";
-import "./dashBoardPage.css";
 import { useNavigate } from "react-router-dom";
+import Upload from "../../components/upload/Upload"; // Adjust path as necessary
+import "./dashBoardPage.css";
 
 const DashboardPage = () => {
-  const queryClient = useQueryClient();
+  const [img, setImg] = useState({
+    isLoading: false,
+    error: "",
+    dbData: {},
+  });
 
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: (text) => {
-      // return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
-        return fetch(`/api/chats`, {
-
+    mutationFn: (data) => {
+      return fetch(`/api/chats`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(data),
       }).then((res) => res.json());
     },
     onSuccess: (id) => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       navigate(`/dashboard/chats/${id}`);
     },
@@ -31,40 +34,46 @@ const DashboardPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const text = e.target.text.value;
+
     if (!text) return;
 
-    mutation.mutate(text);
+    const data = {
+      text,
+      img: img.dbData?.filePath || undefined,
+    };
+
+    mutation.mutate(data);
   };
+
   return (
     <div className="dashboardPage">
       <div className="texts">
         <div className="logo">
-          <img src="/logo1.png" />
+          <img src="/logo1.png" alt="Logo" />
           <h1>ASTRABOT</h1>
         </div>
-        <div className="options">
+        {/* <div className="options">
           <div className="option">
-            <img src="/chat.png"  />
+            <img src="/chat.png" alt="Chat" />
             <span>Create a New Chat</span>
           </div>
           <div className="option">
-            <img src="/image.png" />
+            <img src="/image.png" alt="Analyze Images" />
             <span>Analyze Images</span>
           </div>
           <div className="option">
-            <img src="/code.png"  />
+            <img src="/code.png" alt="Code Help" />
             <span>Help me with my Code</span>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <input type="text" name="text" placeholder="Ask me anything..." />
-          <IKContext/>
-          <button>
-            <img src="/arrow.png" />
+          <Upload setImg={setImg} />
+          <button type="submit">
+            <img src="/arrow.png" alt="Submit" />
           </button>
-          
         </form>
       </div>
     </div>
