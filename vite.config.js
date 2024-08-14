@@ -6,7 +6,7 @@ export default defineConfig({
     proxy: {
       // '/api': 'http://localhost:3000',
       // '/api': 'https://astrabot-backend-aw248tbde-shivansh-kasaudhans-projects.vercel.app/',
-      '/api': 'https://astrabot-backend.vercel.app/'
+      '/': 'https://astrabot-backend.vercel.app/'
       
       
     },
