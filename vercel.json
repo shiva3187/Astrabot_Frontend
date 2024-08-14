@@ -1,7 +1,7 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/:path(.)", "destination": "https://astrabot-backend-jjnw.vercel.app/api/:path" },
+    { "source": "/api/:path(.)", "destination": "https://astrabot-backend-jjnw.vercel.app/:path" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
